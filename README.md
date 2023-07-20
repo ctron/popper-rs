@@ -14,3 +14,9 @@ This project provides Rust bindings for WebAssembly.
 ## Examples
 
 * [Basic](examples/basic) - A basic example with plain WASM
+
+You can run the example using `trunk`:
+
+```shell
+trunk serve examples/basic/index.html --open
+```
