@@ -8,6 +8,14 @@ pub struct Options {
     pub modifiers: Vec<Modifier>,
 }
 
+impl TryFrom<Options> for JsValue {
+    type Error = JsValue;
+
+    fn try_from(value: Options) -> Result<Self, Self::Error> {
+        create_opts(value)
+    }
+}
+
 pub fn create_opts(opts: Options) -> Result<JsValue, JsValue> {
     let mods = js_sys::Array::new();
     for m in &opts.modifiers {

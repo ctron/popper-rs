@@ -11,11 +11,12 @@ extern "C" {
 
     #[wasm_bindgen(js_name = "createPopper")]
     pub fn create_popper(
-        reference: web_sys::Node,
-        popper: web_sys::Node,
+        reference: &web_sys::Node,
+        popper: &web_sys::Node,
         opts: &JsValue,
     ) -> Instance;
 
+    #[derive(Clone, Debug)]
     pub type Instance;
 
     #[wasm_bindgen(method)]

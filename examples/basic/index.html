@@ -2,14 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Browser Panic Hook Example</title>
-
-  <link data-trunk rel="scss" href="assets/styles.scss">
+  <title>Basic example</title>
 
   <style>
-    h1 {
-      color: red;
+    #tooltip {
+      background: #333;
+      color: white;
+      font-weight: bold;
+      padding: 4px 8px;
+      font-size: 13px;
+      border-radius: 4px;
+      display: none;
+    }
+
+    #tooltip[data-show] {
+      display: block;
+    }
+
+    #arrow,
+    #arrow::before {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: inherit;
+    }
+
+    #arrow {
+      visibility: hidden;
+    }
+
+    #arrow::before {
+      visibility: visible;
+      content: '';
+      transform: rotate(45deg);
+    }
+
+    #tooltip[data-popper-placement^='top'] > #arrow {
+      bottom: -4px;
+    }
+
+    #tooltip[data-popper-placement^='bottom'] > #arrow {
+      top: -4px;
+    }
+
+    #tooltip[data-popper-placement^='left'] > #arrow {
+      right: -4px;
+    }
+
+    #tooltip[data-popper-placement^='right'] > #arrow {
+      left: -4px;
     }
   </style>
 
@@ -17,26 +58,12 @@
 
 <body>
 
-<header>
-  <h1>Browser Panic Hook – Example (Basic)</h1>
-</header>
-<main>
-  <section>
-    <h2>Try it out</h2>
-    <p>
-      Once you press the following button, the WebAssembly based application will panic.
-    </p>
-    <button id="panic" type="button">Panic!</button>
-  </section>
+<button id="button" aria-describedby="tooltip">My button</button>
 
-  <section>
-    <h2>Also note</h2>
-    <p>
-      This page already has some styling. Through additional styling of the "panicked" elements, the panic information
-      can be shown in a different style. By default, it would inherit the style sheet of the application.
-    </p>
-  </section>
-</main>
+<div id="tooltip" role="tooltip">
+  My tooltip
+  <div id="arrow" data-popper-arrow></div>
+</div>
 
 </body>
 
