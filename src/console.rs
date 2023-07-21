@@ -2,24 +2,27 @@
 #[allow(unused_macros)]
 macro_rules! debug_active {
     ($s1:expr) => {
-        web_sys::console::debug_1(&JsValue::from($s1));
+        web_sys::console::debug_1(&wasm_bindgen::JsValue::from($s1));
     };
     ($s1:expr, $s2:expr) => {
-        web_sys::console::debug_2(&JsValue::from($s1), &JsValue::from($s2));
+        web_sys::console::debug_2(
+            &wasm_bindgen::JsValue::from($s1),
+            &wasm_bindgen::JsValue::from($s2),
+        );
     };
     ($s1:expr, $s2:expr, $s3:expr) => {
         web_sys::console::debug_3(
-            &JsValue::from($s1),
-            &JsValue::from($s2),
-            &JsValue::from($s3),
+            &wasm_bindgen::JsValue::from($s1),
+            &wasm_bindgen::JsValue::from($s2),
+            &wasm_bindgen::JsValue::from($s3),
         );
     };
     ($s1:expr, $s2:expr, $s3:expr, $s4:expr) => {
         web_sys::console::debug_4(
-            &JsValue::from($s1),
-            &JsValue::from($s2),
-            &JsValue::from($s3),
-            &JsValue::from($s4),
+            &wasm_bindgen::JsValue::from($s1),
+            &wasm_bindgen::JsValue::from($s2),
+            &wasm_bindgen::JsValue::from($s3),
+            &wasm_bindgen::JsValue::from($s4),
         );
     };
 }

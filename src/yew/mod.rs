@@ -1,4 +1,7 @@
 //! Yew integration
+
+pub mod component;
+
 use crate::{console, prelude::*, sys};
 use popper_rs_sys::ModifierArguments;
 use std::cell::RefCell;
@@ -64,12 +67,14 @@ pub fn use_popper(
             |(opts, onstatechange)| {
                 let mut opts: Options = (**opts).clone();
 
+                // disable applying styles, we do this ourselves
                 opts.modifiers.push(Modifier::Custom {
                     name: "applyStyles".into(),
                     phase: None,
                     enabled: Some(false),
                     r#fn: None,
                 });
+                // capture state, forward to callbacks
                 opts.modifiers.push(Modifier::Custom {
                     name: "updateState".into(),
                     phase: Some("write".into()),

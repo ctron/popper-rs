@@ -29,6 +29,9 @@ pub mod prelude {
     pub use crate::modifier::*;
     pub use crate::options::Options;
     pub use crate::state::*;
+
+    #[cfg(feature = "yew")]
+    pub use super::yew::*;
 }
 
 /// Create a new popper instance.
