@@ -1,7 +1,7 @@
 use crate::{console, modifier::*, prelude::*};
 use wasm_bindgen::prelude::*;
 
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, PartialEq)]
 pub struct Options {
     pub placement: Placement,
     pub strategy: Strategy,
@@ -12,11 +12,19 @@ impl TryFrom<Options> for JsValue {
     type Error = JsValue;
 
     fn try_from(value: Options) -> Result<Self, Self::Error> {
+        create_opts(&value)
+    }
+}
+
+impl TryFrom<&Options> for JsValue {
+    type Error = JsValue;
+
+    fn try_from(value: &Options) -> Result<Self, Self::Error> {
         create_opts(value)
     }
 }
 
-pub fn create_opts(opts: Options) -> Result<JsValue, JsValue> {
+pub fn create_opts(opts: &Options) -> Result<JsValue, JsValue> {
     let mods = js_sys::Array::new();
     for m in &opts.modifiers {
         mods.push(&m.to_value()?);
@@ -35,7 +43,7 @@ pub fn create_opts(opts: Options) -> Result<JsValue, JsValue> {
         &opts.placement.into(),
     )?;
 
-    console::debug!("options:", &result);
+    console::debug!("Options after conversion:", &result);
 
     Ok(result.into())
 }

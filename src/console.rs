@@ -1,5 +1,4 @@
-/// Log debug message to the browser console
-
+/// Log a debug message to the browser console
 #[allow(unused_macros)]
 macro_rules! debug_active {
     ($s1:expr) => {

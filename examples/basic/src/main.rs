@@ -57,6 +57,19 @@ pub fn main() -> Result<(), JsValue> {
             gloo_events::EventListener::new(&button, *event, move |_| hide(&tooltip, &instance))
                 .forget();
         }
+
+        {
+            instance.force_update();
+            let state = instance.state();
+            web_sys::console::log_2(&"State".into(), &state);
+
+            web_sys::console::log_2(&"Attributes".into(), &state.attributes());
+            web_sys::console::log_2(&"Attributes/Popper".into(), &state.attributes().popper());
+
+            web_sys::console::log_2(&"Styles".into(), &state.styles());
+            web_sys::console::log_2(&"Styles/Arrow".into(), &state.styles().popper());
+            web_sys::console::log_2(&"Styles/Popper".into(), &state.styles().arrow());
+        }
     }
 
     Ok(())

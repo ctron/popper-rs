@@ -9,6 +9,12 @@ pub enum Orientation {
     Right = "right",
 }
 
+impl Default for Orientation {
+    fn default() -> Self {
+        Self::Right
+    }
+}
+
 #[wasm_bindgen]
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 pub enum Placement {

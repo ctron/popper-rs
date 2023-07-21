@@ -1,5 +1,5 @@
 [package]
-name = "basic"
+name = "yew"
 version = "0.1.0"
 authors = ["Jens Reimann <jreimann@redhat.com>"]
 edition = "2021"
@@ -9,16 +9,19 @@ description = "Example of the popper-rs crate"
 repository = "https://github.com/ctron/popper-rs"
 
 [dependencies]
+log = "0.4"
 wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"
+wasm-logger = "0.2"
 gloo-events = "0.1"
 gloo-utils = "0.1"
 
-popper-rs = { path = "../.." }
+yew = { version = "0.20", features = ["csr"] }
+
+popper-rs = { path = "../..", features = ["debug", "yew"] }
 
 [dependencies.web-sys]
 version = "0.3"
 features = [
     "HtmlElement",
-    "console"
 ]

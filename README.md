@@ -14,6 +14,7 @@ This project provides Rust bindings for WebAssembly.
 ## Examples
 
 * [Basic](examples/basic) - A basic example with plain WASM
+* [Yew](examples/yew) - An example using Yew with hooks
 
 You can run the example using `trunk`:
 

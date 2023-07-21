@@ -1,3 +1,4 @@
+use crate::types::Placement;
 use wasm_bindgen::prelude::*;
 
 pub mod types;
@@ -28,4 +29,50 @@ extern "C" {
     #[wasm_bindgen(method, js_name = "forceUpdate")]
     pub fn force_update(this: &Instance);
 
+    #[wasm_bindgen(method, getter)]
+    pub fn state(this: &Instance) -> State;
+}
+
+#[wasm_bindgen]
+extern "C" {
+    #[derive(Clone, Debug)]
+    pub type State;
+
+    #[wasm_bindgen(method, getter)]
+    pub fn attributes(this: &State) -> Attributes;
+
+    #[wasm_bindgen(method, getter)]
+    pub fn styles(this: &State) -> Styles;
+
+    #[wasm_bindgen(method, getter)]
+    pub fn placement(this: &State) -> Placement;
+}
+
+#[wasm_bindgen]
+extern "C" {
+    #[derive(Clone, Debug)]
+    pub type Styles;
+
+    #[wasm_bindgen(method, getter)]
+    pub fn arrow(this: &Styles) -> JsValue;
+    #[wasm_bindgen(method, getter)]
+    pub fn popper(this: &Styles) -> JsValue;
+}
+
+#[wasm_bindgen]
+extern "C" {
+    #[derive(Clone, Debug)]
+    pub type Attributes;
+
+    #[wasm_bindgen(method, getter)]
+    pub fn popper(this: &Attributes) -> JsValue;
+}
+
+#[wasm_bindgen]
+extern "C" {
+    #[derive(Clone, Debug)]
+    pub type ModifierArguments;
+
+    #[wasm_bindgen(method, getter)]
+    pub fn instance(this: &ModifierArguments) -> Instance;
 }
