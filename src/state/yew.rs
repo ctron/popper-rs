@@ -12,6 +12,12 @@ impl IntoPropValue<Option<AttrValue>> for &StylesMap {
     }
 }
 
+impl IntoPropValue<AttrValue> for &StylesMap {
+    fn into_prop_value(self) -> AttrValue {
+        AttrValue::from(self.to_string())
+    }
+}
+
 impl ApplyAttributes for NodeRef {
     fn apply_attributes(&self, attributes: &AttributesMap) {
         if let Some(element) = self.cast::<Element>() {
