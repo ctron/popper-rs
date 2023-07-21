@@ -41,6 +41,25 @@ impl std::fmt::Display for StylesMap {
     }
 }
 
+impl StylesMap {
+    /// Extend with a single key/value pair
+    pub fn extend_with(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.insert(key.into(), value.into());
+        self
+    }
+
+    /// Extend with multiple key/value pairs
+    pub fn extend_from<I, K, V>(mut self, i: I) -> Self
+    where
+        I: IntoIterator<Item = (K, V)>,
+        K: Into<String>,
+        V: Into<String>,
+    {
+        self.extend(i.into_iter().map(|(k, v)| (k.into(), v.into())));
+        self
+    }
+}
+
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct AttributesMap(pub HashMap<String, String>);
 
