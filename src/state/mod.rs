@@ -1,6 +1,7 @@
 #[cfg(feature = "yew")]
 mod yew;
 
+#[cfg(feature = "yew")]
 pub use self::yew::*;
 
 use crate::sys;
