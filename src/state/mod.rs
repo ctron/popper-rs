@@ -44,6 +44,20 @@ impl std::fmt::Display for StylesMap {
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct AttributesMap(pub HashMap<String, String>);
 
+impl Deref for AttributesMap {
+    type Target = HashMap<String, String>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for AttributesMap {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
 /// A way to apply attributes to elements
 pub trait ApplyAttributes {
     fn apply_attributes(&self, attributes: &AttributesMap);
