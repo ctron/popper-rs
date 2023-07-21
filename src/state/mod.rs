@@ -43,20 +43,22 @@ impl std::fmt::Display for StylesMap {
 
 impl StylesMap {
     /// Extend with a single key/value pair
-    pub fn extend_with(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
-        self.insert(key.into(), value.into());
-        self
+    pub fn extend_with(&self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        let mut result = self.clone();
+        result.insert(key.into(), value.into());
+        result
     }
 
     /// Extend with multiple key/value pairs
-    pub fn extend_from<I, K, V>(mut self, i: I) -> Self
+    pub fn extend_from<I, K, V>(&self, i: I) -> Self
     where
         I: IntoIterator<Item = (K, V)>,
         K: Into<String>,
         V: Into<String>,
     {
-        self.extend(i.into_iter().map(|(k, v)| (k.into(), v.into())));
-        self
+        let mut result = self.clone();
+        result.extend(i.into_iter().map(|(k, v)| (k.into(), v.into())));
+        result
     }
 }
 
