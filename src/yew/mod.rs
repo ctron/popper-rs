@@ -42,7 +42,7 @@ pub fn use_popper(
     popper: NodeRef,
     options: Rc<Options>,
 ) -> Result<UsePopper, JsValue> {
-    let state = use_state(State::default);
+    let state = use_state_eq(State::default);
 
     // on state callback, we must keep this until we no longer need the popper instance
     let onstatechange = {
