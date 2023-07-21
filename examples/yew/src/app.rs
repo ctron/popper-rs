@@ -1,4 +1,4 @@
-use crate::example::{basic, ondemand};
+use crate::example::{basic, ondemand, portal};
 use popper_rs::prelude::Placement;
 use yew::prelude::*;
 
@@ -17,6 +17,11 @@ pub fn application() -> Html {
 
             <ondemand::Example id="example1" target="Hover me">{ "Content" }</ondemand::Example>
             <ondemand::Example id="example2" target="Hover me too" placement={Placement::Bottom}>{ "Different content" }</ondemand::Example>
+
+            <h2>{"Portal"}</h2>
+
+            <portal::Example id="example1" target="Hover me">{ "Content" }</portal::Example>
+            <portal::Example id="example2" target="Hover me too" placement={Placement::Bottom}>{ "Different content" }</portal::Example>
         </>
     )
 }
