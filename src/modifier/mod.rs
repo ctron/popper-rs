@@ -1,3 +1,5 @@
+//! Modifiers
+
 mod offset;
 mod prevent_overflow;
 
@@ -12,6 +14,12 @@ use std::rc::Rc;
 use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsValue;
 
+/// Definition of a modifier function.
+///
+/// A modifier function will be called from popper.js and thus needs to be valid for the lifetime
+/// of the popper instance. Dropping the closure will invalidate the function and it will no longer
+/// be executed. This means that you need to keep a reference to the function for as long as it
+/// should be in used.
 #[derive(Clone, Debug)]
 pub struct ModifierFn(#[allow(clippy::type_complexity)] pub Rc<Closure<dyn Fn(ModifierArguments)>>);
 
@@ -21,16 +29,17 @@ impl PartialEq for ModifierFn {
     }
 }
 
+/// Standard modifiers
 #[derive(Clone, Debug, PartialEq)]
 pub enum Modifier {
+    Offset(Offset),
+    PreventOverflow(PreventOverflow),
     Custom {
         name: Cow<'static, str>,
         phase: Option<Cow<'static, str>>,
         enabled: Option<bool>,
         r#fn: Option<ModifierFn>,
     },
-    Offset(Offset),
-    PreventOverflow(PreventOverflow),
 }
 
 impl Modifier {

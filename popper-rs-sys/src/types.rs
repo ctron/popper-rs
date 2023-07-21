@@ -45,6 +45,11 @@ impl Default for Placement {
     }
 }
 
+/// Positioning strategy for the popper content.
+///
+/// This relates to the positioning of the HTML element, using the CSS `position` style.
+///
+/// When using "portals", you most likely want [`Strategy::Fixed`].
 #[wasm_bindgen]
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 pub enum Strategy {

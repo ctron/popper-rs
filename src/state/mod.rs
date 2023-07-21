@@ -1,3 +1,5 @@
+//! State
+
 #[cfg(feature = "yew")]
 mod yew;
 
@@ -12,6 +14,7 @@ use std::ops::{Deref, DerefMut};
 use wasm_bindgen::prelude::*;
 use web_sys::Element;
 
+/// A map of styles.
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct StylesMap(pub HashMap<String, String>);
 
@@ -41,6 +44,7 @@ impl std::fmt::Display for StylesMap {
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct AttributesMap(pub HashMap<String, String>);
 
+/// A way to apply attributes to elements
 pub trait ApplyAttributes {
     fn apply_attributes(&self, attributes: &AttributesMap);
 }

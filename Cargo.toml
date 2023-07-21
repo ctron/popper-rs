@@ -27,3 +27,6 @@ version = "0.3"
 
 [features]
 debug = ["web-sys/console"]
+
+[package.metadata.docs.rs]
+all-features = true

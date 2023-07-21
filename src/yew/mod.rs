@@ -1,4 +1,4 @@
-use crate::state::State;
+//! Yew integration
 use crate::{console, prelude::*, sys};
 use popper_rs_sys::ModifierArguments;
 use std::cell::RefCell;

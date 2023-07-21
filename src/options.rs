@@ -1,10 +1,15 @@
+//! Options
 use crate::{console, modifier::*, prelude::*};
 use wasm_bindgen::prelude::*;
 
+/// Options for creating the popper instance.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct Options {
+    /// Desired placement
     pub placement: Placement,
+    /// Positioning strategy
     pub strategy: Strategy,
+    /// Modifiers
     pub modifiers: Vec<Modifier>,
 }
 
@@ -24,6 +29,7 @@ impl TryFrom<&Options> for JsValue {
     }
 }
 
+#[doc(hidden)]
 pub fn create_opts(opts: &Options) -> Result<JsValue, JsValue> {
     let mods = js_sys::Array::new();
     for m in &opts.modifiers {
