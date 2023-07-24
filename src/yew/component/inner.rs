@@ -28,7 +28,6 @@ pub(crate) fn inner_popper(props: &InnerPopperProperties) -> Html {
             placement: *placement,
             strategy: props.strategy,
             modifiers: modifiers.clone(),
-            ..Default::default()
         },
         (props.placement, props.modifiers.clone()),
     );

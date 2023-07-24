@@ -87,7 +87,7 @@ pub trait ApplyAttributes {
 impl ApplyAttributes for &Element {
     fn apply_attributes(&self, attributes: &AttributesMap) {
         for (k, v) in &attributes.0 {
-            let _ = self.set_attribute(&k, &v);
+            let _ = self.set_attribute(k, v);
         }
     }
 }
