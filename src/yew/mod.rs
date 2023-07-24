@@ -33,7 +33,9 @@ impl UsePopperInstance {
     }
 
     pub async fn update(&self) {
-        if let Some(instance) = &*self.0.borrow() {
+        // Clone to not hold the reference during the await
+        let instance = (*self.0.borrow()).clone();
+        if let Some(instance) = instance {
             instance.update().await;
         }
     }
