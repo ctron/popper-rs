@@ -1,33 +1,6 @@
-use crate::console;
+use super::inner::InnerPopper;
 use crate::prelude::*;
-use yew::platform::spawn_local;
 use yew::prelude::*;
-
-#[derive(Clone, PartialEq, Properties)]
-pub struct PortalPopperProperties {
-    /// The content to show when the popper is visible
-    #[prop_or_default]
-    pub children: Children,
-
-    /// Flag if the content should be visible
-    pub visible: bool,
-
-    /// The target to align the content to
-    pub target: NodeRef,
-
-    pub content: NodeRef,
-
-    /// The desired placement
-    #[prop_or_default]
-    pub placement: Placement,
-
-    /// Additional modifiers
-    #[prop_or_default]
-    pub modifiers: Vec<Modifier>,
-
-    /// The state notification callback.
-    pub onstatechange: Callback<State>,
-}
 
 /// A component showing the popper content in a portal.
 ///
@@ -93,52 +66,14 @@ pub struct PortalPopperProperties {
 ///
 /// For a complete example, see the `yew` example `component`.
 #[function_component(PortalPopper)]
-pub fn portal_popper(props: &PortalPopperProperties) -> Html {
+pub fn portal_popper(props: &PopperProperties) -> Html {
     if props.visible {
-        html!(<InnerPopper ..props.clone() />)
+        html!(<InnerPopper
+            base={props.clone()}
+            strategy={Strategy::Fixed}
+            portal=true
+        />)
     } else {
         Html::default()
     }
-}
-
-#[function_component(InnerPopper)]
-fn inner_popper(props: &PortalPopperProperties) -> Html {
-    let popper_ref = props.content.clone();
-    let reference_ref = props.target.clone();
-
-    let options = use_memo(
-        |(placement, modifiers)| Options {
-            placement: *placement,
-            strategy: Strategy::Fixed,
-            modifiers: modifiers.clone(),
-            ..Default::default()
-        },
-        (props.placement, props.modifiers.clone()),
-    );
-
-    let popper = use_popper(reference_ref.clone(), popper_ref.clone(), options).unwrap();
-
-    {
-        let popper = popper.instance.clone();
-        use_effect(|| {
-            spawn_local(async move {
-                popper.update().await;
-            });
-        });
-    }
-
-    use_effect_with_deps(
-        |(callback, state)| {
-            console::debug!("Forwarding state change", format!("{:?}", state));
-            callback.emit(state.clone());
-        },
-        (props.onstatechange.clone(), (*popper.state).clone()),
-    );
-
-    create_portal(
-        html!(
-            { for props.children.iter() }
-        ),
-        gloo_utils::body().into(),
-    )
 }

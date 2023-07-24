@@ -31,6 +31,8 @@ pub mod prelude {
     pub use crate::state::*;
 
     #[cfg(feature = "yew")]
+    pub use super::yew::component::*;
+    #[cfg(feature = "yew")]
     pub use super::yew::*;
 }
 

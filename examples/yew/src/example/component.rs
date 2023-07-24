@@ -1,7 +1,7 @@
 use popper_rs::modifier::{Modifier, Offset};
 use popper_rs::prelude::Placement;
 use popper_rs::state::{ApplyAttributes, State};
-use popper_rs::yew::component::PortalPopper;
+use popper_rs::yew::component::*;
 use yew::prelude::*;
 
 #[derive(PartialEq, Properties)]
@@ -51,8 +51,8 @@ pub struct ExampleProperties {
     pub placement: Placement,
 }
 
-#[function_component(Example)]
-pub fn example(props: &ExampleProperties) -> Html {
+#[function_component(PortalExample)]
+pub fn portal_example(props: &ExampleProperties) -> Html {
     let ids = use_memo(
         |id| (format!("button-{id}"), format!("tooltip-{id}")),
         props.id.clone(),
@@ -103,6 +103,63 @@ pub fn example(props: &ExampleProperties) -> Html {
                         { for props.children.iter() }
                     </Tooltip>
                 </PortalPopper>
+            </div>
+        </>
+    )
+}
+
+#[function_component(InlineExample)]
+pub fn inline_example(props: &ExampleProperties) -> Html {
+    let ids = use_memo(
+        |id| (format!("button-{id}"), format!("tooltip-{id}")),
+        props.id.clone(),
+    );
+
+    let button_ref = use_node_ref();
+    let tooltip_ref = use_node_ref();
+
+    let active = use_state_eq(|| false);
+
+    let onclick = {
+        let active = active.clone();
+        use_callback(move |_, active| active.set(!**active), active)
+    };
+
+    let state = use_state_eq(State::default);
+    let onstatechange = use_callback(|new_state, state| state.set(new_state), state.clone());
+
+    html!(
+        <>
+            <div>
+                <button
+                    ref={button_ref.clone()}
+                    id={ids.0.to_string()}
+                    class="button"
+                    aria-describedby={ids.1.to_string()}
+                    {onclick}
+                > { &props.target } </button>
+
+                <InlinePopper
+                    target={button_ref}
+                    content={tooltip_ref.clone()}
+                    visible={*active}
+                    {onstatechange}
+                    placement={props.placement}
+                    modifiers={vec![
+                        Modifier::Offset(Offset {
+                            skidding: 0,
+                            distance: 8,
+                        })
+                    ]}
+                >
+                    <Tooltip
+                        id={ids.1.to_string()}
+                        r#ref={tooltip_ref}
+                        state={(*state).clone()}
+                    >
+                        { for props.children.iter() }
+                    </Tooltip>
+                </InlinePopper>
             </div>
         </>
     )
