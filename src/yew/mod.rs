@@ -50,22 +50,18 @@ pub fn use_popper(
     let state = use_state_eq(State::default);
 
     // on state callback, we must keep this until we no longer need the popper instance
-    let onstatechange = {
-        use_memo(
-            |()| {
-                let state = state.clone();
-                Closure::wrap(Box::new(move |args: ModifierArguments| {
-                    let s = args.instance().state();
-                    console::debug!("updateState:", &s);
-                    state.set(s.into());
-                }) as Box<dyn Fn(ModifierArguments)>)
-            },
-            (),
-        )
-    };
+    let onstatechange = use_memo((), |()| {
+        let state = state.clone();
+        Closure::wrap(Box::new(move |args: ModifierArguments| {
+            let s = args.instance().state();
+            console::debug!("updateState:", &s);
+            state.set(s.into());
+        }) as Box<dyn Fn(ModifierArguments)>)
+    });
 
     let options: Rc<Result<JsValue, JsValue>> = {
         use_memo(
+            (options, ModifierFn(onstatechange.clone())),
             |(opts, onstatechange)| {
                 let mut opts: Options = (**opts).clone();
 
@@ -86,7 +82,6 @@ pub fn use_popper(
 
                 opts.try_into()
             },
-            (options, ModifierFn(onstatechange.clone())),
         )
     };
 
@@ -108,7 +103,8 @@ pub fn use_popper(
 
     {
         let instance = instance.clone();
-        use_effect_with_deps(
+        use_effect_with(
+            (reference, popper, options),
             move |(reference, popper, options)| {
                 let reference = reference.get();
                 let popper = popper.get();
@@ -131,7 +127,6 @@ pub fn use_popper(
                     }
                 }
             },
-            (reference, popper, options),
         );
     }
 

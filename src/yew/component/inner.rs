@@ -24,12 +24,12 @@ pub(crate) fn inner_popper(props: &InnerPopperProperties) -> Html {
     let reference_ref = props.target.clone();
 
     let options = use_memo(
+        (props.placement, props.modifiers.clone()),
         |(placement, modifiers)| Options {
             placement: *placement,
             strategy: props.strategy,
             modifiers: modifiers.clone(),
         },
-        (props.placement, props.modifiers.clone()),
     );
 
     let popper = use_popper(reference_ref.clone(), popper_ref.clone(), options).unwrap();
@@ -43,12 +43,12 @@ pub(crate) fn inner_popper(props: &InnerPopperProperties) -> Html {
         });
     }
 
-    use_effect_with_deps(
+    use_effect_with(
+        (props.onstatechange.clone(), (*popper.state).clone()),
         |(callback, state)| {
             console::debug!("Forwarding state change", format!("{:?}", state));
             callback.emit(state.clone());
         },
-        (props.onstatechange.clone(), (*popper.state).clone()),
     );
 
     if props.portal {
