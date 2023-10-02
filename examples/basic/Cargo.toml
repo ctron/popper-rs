@@ -22,3 +22,5 @@ features = [
     "HtmlElement",
     "console"
 ]
+
+[workspace]

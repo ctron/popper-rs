@@ -17,3 +17,6 @@ version = "0.3"
 features = [
     "Node"
 ]
+
+[package.metadata.release]
+tag = false

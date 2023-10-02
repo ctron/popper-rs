@@ -25,3 +25,5 @@ version = "0.3"
 features = [
     "HtmlElement",
 ]
+
+[workspace]
