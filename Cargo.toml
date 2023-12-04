@@ -31,5 +31,10 @@ debug = ["web-sys/console"]
 [package.metadata.docs.rs]
 all-features = true
 
+[workspace]
+members = [
+    "popper-rs-sys"
+]
+
 [workspace.metadata.release]
 tag-name = "v{{version}}"
