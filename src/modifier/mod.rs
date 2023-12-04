@@ -2,12 +2,15 @@
 
 mod offset;
 mod prevent_overflow;
+mod same_width;
 
 pub use offset::*;
 pub use prevent_overflow::*;
+pub use same_width::*;
 
 use crate::sys::ModifierArguments;
 use gloo_utils::format::JsValueSerdeExt;
+use js_sys::Array;
 use serde_json::json;
 use std::borrow::Cow;
 use std::rc::Rc;
@@ -29,27 +32,47 @@ impl PartialEq for ModifierFn {
     }
 }
 
+/// Definition of a modifier effect function.
+///
+/// A modifier function will be called from popper.js and thus needs to be valid for the lifetime
+/// of the popper instance. Dropping the closure will invalidate the function and it will no longer
+/// be executed. This means that you need to keep a reference to the function for as long as it
+/// should be in used.
+#[derive(Clone, Debug)]
+pub struct EffectFn(#[allow(clippy::type_complexity)] pub Rc<Closure<dyn Fn(ModifierArguments)>>);
+
+impl PartialEq for EffectFn {
+    fn eq(&self, other: &Self) -> bool {
+        Rc::ptr_eq(&self.0, &other.0)
+    }
+}
+
 /// Standard modifiers
 #[derive(Clone, Debug, PartialEq)]
 pub enum Modifier {
     Offset(Offset),
     PreventOverflow(PreventOverflow),
+    SameWidth(SameWidth),
     Custom {
         name: Cow<'static, str>,
         phase: Option<Cow<'static, str>>,
+        requires: Vec<Cow<'static, str>>,
         enabled: Option<bool>,
         r#fn: Option<ModifierFn>,
+        effect: Option<EffectFn>,
     },
 }
 
 impl Modifier {
     pub fn to_value(&self) -> Result<JsValue, JsValue> {
-        let options = match self {
+        match self {
             Self::Custom {
                 name,
                 phase,
+                requires,
                 enabled,
                 r#fn,
+                effect,
             } => {
                 let m1 = js_sys::Object::new();
                 js_sys::Reflect::set(&m1, &"name".into(), &JsValue::from_str(name))?;
@@ -62,23 +85,29 @@ impl Modifier {
                 if let Some(r#fn) = r#fn {
                     js_sys::Reflect::set(&m1, &"fn".into(), (*r#fn.0).as_ref())?;
                 }
+                if let Some(effect) = effect {
+                    js_sys::Reflect::set(&m1, &"effect".into(), (*effect.0).as_ref())?;
+                }
+                js_sys::Reflect::set(
+                    &m1,
+                    &"requires".into(),
+                    Array::from_iter(requires.iter().map(|s| JsValue::from_str(s))).as_ref(),
+                )?;
 
-                return Ok(m1.into());
+                Ok(m1.into())
             }
-            Self::Offset(options) => {
-                json!({
-                    "name": "offset",
-                    "options": options.to_json(),
-                })
-            }
-            Self::PreventOverflow(options) => {
-                json!({
-                    "name": "preventOverflow",
-                    "options": options.to_json(),
-                })
-            }
-        };
+            Self::Offset(options) => JsValue::from_serde(&json!({
+                "name": "offset",
+                "options": options.to_json(),
+            }))
+            .map_err(|err| JsValue::from_str(&err.to_string())),
+            Self::PreventOverflow(options) => JsValue::from_serde(&json!({
+                "name": "preventOverflow",
+                "options": options.to_json(),
+            }))
+            .map_err(|err| JsValue::from_str(&err.to_string())),
 
-        JsValue::from_serde(&options).map_err(|err| JsValue::from_str(&err.to_string()))
+            Self::SameWidth(options) => Ok(options.to_js_value()),
+        }
     }
 }

@@ -1,5 +1,6 @@
 use crate::types::Placement;
 use wasm_bindgen::prelude::*;
+use web_sys::HtmlElement;
 
 pub mod types;
 
@@ -42,6 +43,9 @@ extern "C" {
     pub fn attributes(this: &State) -> Attributes;
 
     #[wasm_bindgen(method, getter)]
+    pub fn elements(this: &State) -> Elements;
+
+    #[wasm_bindgen(method, getter)]
     pub fn styles(this: &State) -> Styles;
 
     #[wasm_bindgen(method, getter)]
@@ -55,6 +59,7 @@ extern "C" {
 
     #[wasm_bindgen(method, getter)]
     pub fn arrow(this: &Styles) -> JsValue;
+
     #[wasm_bindgen(method, getter)]
     pub fn popper(this: &Styles) -> JsValue;
 }
@@ -71,8 +76,26 @@ extern "C" {
 #[wasm_bindgen]
 extern "C" {
     #[derive(Clone, Debug)]
+    pub type Elements;
+
+    #[wasm_bindgen(method, getter)]
+    pub fn reference(this: &Elements) -> JsValue;
+
+    #[wasm_bindgen(method, getter)]
+    pub fn popper(this: &Elements) -> HtmlElement;
+
+    #[wasm_bindgen(method, getter)]
+    pub fn arrow(this: &Elements) -> Option<HtmlElement>;
+}
+
+#[wasm_bindgen]
+extern "C" {
+    #[derive(Clone, Debug)]
     pub type ModifierArguments;
 
     #[wasm_bindgen(method, getter)]
     pub fn instance(this: &ModifierArguments) -> Instance;
+
+    #[wasm_bindgen(method, getter)]
+    pub fn state(this: &ModifierArguments) -> State;
 }
