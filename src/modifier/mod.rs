@@ -10,7 +10,6 @@ pub use same_width::*;
 
 use crate::sys::ModifierArguments;
 use gloo_utils::format::JsValueSerdeExt;
-use js_sys::Array;
 use serde_json::json;
 use std::borrow::Cow;
 use std::rc::Rc;
@@ -56,10 +55,8 @@ pub enum Modifier {
     Custom {
         name: Cow<'static, str>,
         phase: Option<Cow<'static, str>>,
-        requires: Vec<Cow<'static, str>>,
         enabled: Option<bool>,
         r#fn: Option<ModifierFn>,
-        effect: Option<EffectFn>,
     },
 }
 
@@ -69,10 +66,8 @@ impl Modifier {
             Self::Custom {
                 name,
                 phase,
-                requires,
                 enabled,
                 r#fn,
-                effect,
             } => {
                 let m1 = js_sys::Object::new();
                 js_sys::Reflect::set(&m1, &"name".into(), &JsValue::from_str(name))?;
@@ -85,14 +80,6 @@ impl Modifier {
                 if let Some(r#fn) = r#fn {
                     js_sys::Reflect::set(&m1, &"fn".into(), (*r#fn.0).as_ref())?;
                 }
-                if let Some(effect) = effect {
-                    js_sys::Reflect::set(&m1, &"effect".into(), (*effect.0).as_ref())?;
-                }
-                js_sys::Reflect::set(
-                    &m1,
-                    &"requires".into(),
-                    Array::from_iter(requires.iter().map(|s| JsValue::from_str(s))).as_ref(),
-                )?;
 
                 Ok(m1.into())
             }
