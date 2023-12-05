@@ -3,9 +3,11 @@
 mod inline;
 mod inner;
 mod portal;
+mod portal_to;
 
 pub use inline::*;
 pub use portal::*;
+pub use portal_to::*;
 
 use crate::prelude::*;
 use yew::prelude::*;

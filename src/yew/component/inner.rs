@@ -1,6 +1,7 @@
 use super::PopperProperties;
 use crate::{console, prelude::*};
 use std::ops::Deref;
+use web_sys::Element;
 use yew::{platform::spawn_local, prelude::*};
 
 #[derive(PartialEq, Properties)]
@@ -8,6 +9,7 @@ pub(crate) struct InnerPopperProperties {
     pub base: PopperProperties,
     pub strategy: Strategy,
     pub portal: bool,
+    pub portal_target: Option<Element>,
 }
 
 impl Deref for InnerPopperProperties {
@@ -56,7 +58,10 @@ pub(crate) fn inner_popper(props: &InnerPopperProperties) -> Html {
             html!(
                 { for props.children.iter() }
             ),
-            gloo_utils::body().into(),
+            props
+                .portal_target
+                .clone()
+                .unwrap_or_else(|| gloo_utils::body().into()),
         )
     } else {
         html!(

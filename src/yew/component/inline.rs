@@ -10,6 +10,7 @@ pub fn inline_popper(props: &PopperProperties) -> Html {
             base={props.clone()}
             strategy={Strategy::Absolute}
             portal=false
+            portal_target={None}
         />)
     } else {
         Html::default()
