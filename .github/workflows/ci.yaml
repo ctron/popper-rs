@@ -32,7 +32,7 @@ jobs:
 
       - name: Test
         run: |
-          cargo test # need to run this as non-wasm32
+          cargo test --all-features # need to run this as non-wasm32
 
       - name: Install binstall
         run: |
