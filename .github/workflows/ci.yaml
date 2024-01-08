@@ -29,6 +29,7 @@ jobs:
       - name: Check examples
         run: |
           cargo check --target wasm32-unknown-unknown --manifest-path examples/basic/Cargo.toml
+          cargo check --target wasm32-unknown-unknown --manifest-path examples/yew/Cargo.toml
 
       - name: Test
         run: |
