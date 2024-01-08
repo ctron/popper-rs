@@ -17,25 +17,21 @@ pub struct ExampleProperties {
 
 #[function_component(Example)]
 pub fn example(props: &ExampleProperties) -> Html {
-    let ids = use_memo(
-        |id| (format!("button-{id}"), format!("tooltip-{id}")),
-        props.id.clone(),
-    );
+    let ids = use_memo(props.id.clone(), |id| {
+        (format!("button-{id}"), format!("tooltip-{id}"))
+    });
 
     let button_ref = use_node_ref();
     let tooltip_ref = use_node_ref();
 
-    let options = use_memo(
-        |placement| Options {
-            placement: *placement,
-            modifiers: vec![Modifier::Offset(Offset {
-                skidding: 0,
-                distance: 8,
-            })],
-            ..Default::default()
-        },
-        props.placement,
-    );
+    let options = use_memo(props.placement, |placement| Options {
+        placement: *placement,
+        modifiers: vec![Modifier::Offset(Offset {
+            skidding: 0,
+            distance: 8,
+        })],
+        ..Default::default()
+    });
 
     let popper = use_popper(button_ref.clone(), tooltip_ref.clone(), options).unwrap();
 
@@ -43,30 +39,27 @@ pub fn example(props: &ExampleProperties) -> Html {
 
     let onshow = {
         let active = active.clone();
-        use_callback(
-            move |(), (active, popper)| {
-                let popper = popper.clone();
-                spawn_local(async move {
-                    popper.update().await;
-                });
-                active.set(true);
-            },
-            (active, popper.instance),
-        )
+        use_callback((active, popper.instance), move |(), (active, popper)| {
+            let popper = popper.clone();
+            spawn_local(async move {
+                popper.update().await;
+            });
+            active.set(true);
+        })
     };
 
     let onhide = {
         let active = active.clone();
-        use_callback(move |(), active| active.set(false), active)
+        use_callback(active, move |(), active| active.set(false))
     };
 
     let data_show = (*active).then(AttrValue::default);
 
-    use_effect_with_deps(
+    use_effect_with(
+        (tooltip_ref.clone(), popper.state.attributes.popper.clone()),
         |(tooltip_ref, attributes)| {
             tooltip_ref.apply_attributes(attributes);
         },
-        (tooltip_ref.clone(), popper.state.attributes.popper.clone()),
     );
 
     html!(

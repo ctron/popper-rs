@@ -21,9 +21,9 @@ pub struct TooltipProperties {
 pub fn example(props: &TooltipProperties) -> Html {
     let tooltip_ref = props.r#ref.clone();
 
-    use_effect_with_deps(
-        |(tooltip_ref, attributes)| tooltip_ref.apply_attributes(attributes),
+    use_effect_with(
         (tooltip_ref.clone(), props.state.attributes.popper.clone()),
+        |(tooltip_ref, attributes)| tooltip_ref.apply_attributes(attributes),
     );
 
     html!(
@@ -53,10 +53,9 @@ pub struct ExampleProperties {
 
 #[function_component(PortalExample)]
 pub fn portal_example(props: &ExampleProperties) -> Html {
-    let ids = use_memo(
-        |id| (format!("button-{id}"), format!("tooltip-{id}")),
-        props.id.clone(),
-    );
+    let ids = use_memo(props.id.clone(), |id| {
+        (format!("button-{id}"), format!("tooltip-{id}"))
+    });
 
     let button_ref = use_node_ref();
     let tooltip_ref = use_node_ref();
@@ -65,11 +64,11 @@ pub fn portal_example(props: &ExampleProperties) -> Html {
 
     let onclick = {
         let active = active.clone();
-        use_callback(move |_, active| active.set(!**active), active)
+        use_callback(active, move |_, active| active.set(!**active))
     };
 
     let state = use_state_eq(State::default);
-    let onstatechange = use_callback(|new_state, state| state.set(new_state), state.clone());
+    let onstatechange = use_callback(state.clone(), |new_state, state| state.set(new_state));
 
     html!(
         <>
@@ -110,10 +109,9 @@ pub fn portal_example(props: &ExampleProperties) -> Html {
 
 #[function_component(InlineExample)]
 pub fn inline_example(props: &ExampleProperties) -> Html {
-    let ids = use_memo(
-        |id| (format!("button-{id}"), format!("tooltip-{id}")),
-        props.id.clone(),
-    );
+    let ids = use_memo(props.id.clone(), |id| {
+        (format!("button-{id}"), format!("tooltip-{id}"))
+    });
 
     let button_ref = use_node_ref();
     let tooltip_ref = use_node_ref();
@@ -122,11 +120,11 @@ pub fn inline_example(props: &ExampleProperties) -> Html {
 
     let onclick = {
         let active = active.clone();
-        use_callback(move |_, active| active.set(!**active), active)
+        use_callback(active, move |_, active| active.set(!**active))
     };
 
     let state = use_state_eq(State::default);
-    let onstatechange = use_callback(|new_state, state| state.set(new_state), state.clone());
+    let onstatechange = use_callback(state.clone(), |new_state, state| state.set(new_state));
 
     html!(
         <>
