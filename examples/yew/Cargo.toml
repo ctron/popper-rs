@@ -16,7 +16,7 @@ wasm-logger = "0.2"
 gloo-events = "0.2"
 gloo-utils = "0.2"
 
-yew = { version = "0.21", features = ["csr"] }
+yew = { version = "0.22", features = ["csr"] }
 
 popper-rs = { path = "../..", features = ["debug", "yew"] }
 
