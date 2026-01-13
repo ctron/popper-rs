@@ -1,7 +1,7 @@
 [package]
 name = "popper-rs"
-version = "0.3.2"
-edition = "2021"
+version = "0.4.0"
+edition = "2024"
 
 license = "Apache-2.0"
 readme = "README.md"
@@ -14,11 +14,11 @@ keywords = ["yew", "popper", "web", "html"]
 [dependencies]
 gloo-utils = "0.2"
 js-sys = "0.3.64"
-serde = { version = "1", features = ["derive" ] }
+serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 wasm-bindgen = "0.2.87"
 
-popper-rs-sys = { version = "0.3.2", path = "popper-rs-sys" }
+popper-rs-sys = { version = "0.4.0", path = "popper-rs-sys" }
 
 yew = { version = "0.22", optional = true }
 

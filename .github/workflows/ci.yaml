@@ -9,10 +9,10 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-242.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       - name: Install wasm32 target
         run: |
@@ -45,4 +45,4 @@ jobs:
 
       - name: Check all features
         run: |
-          cargo check-all-features --target wasm32-unknown-unknown
+          cargo check-all-features -- --target wasm32-unknown-unknown
