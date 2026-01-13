@@ -3,9 +3,6 @@
 #[cfg(feature = "yew")]
 mod yew;
 
-#[cfg(feature = "yew")]
-pub use self::yew::*;
-
 use crate::sys;
 use js_sys::{Array, Object};
 use std::collections::HashMap;
