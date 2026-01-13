@@ -23,8 +23,8 @@ use wasm_bindgen::JsValue;
 
 /// The prelude
 pub mod prelude {
-    pub use popper_rs_sys::types::*;
     pub use popper_rs_sys::Instance;
+    pub use popper_rs_sys::types::*;
 
     pub use crate::modifier::*;
     pub use crate::options::Options;

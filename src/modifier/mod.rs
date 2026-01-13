@@ -13,8 +13,8 @@ use gloo_utils::format::JsValueSerdeExt;
 use serde_json::json;
 use std::borrow::Cow;
 use std::rc::Rc;
-use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsValue;
+use wasm_bindgen::closure::Closure;
 
 /// Definition of a modifier function.
 ///

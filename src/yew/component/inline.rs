@@ -1,4 +1,4 @@
-use super::{inner::InnerPopper, PopperProperties};
+use super::{PopperProperties, inner::InnerPopper};
 use crate::prelude::*;
 use yew::prelude::*;
 
