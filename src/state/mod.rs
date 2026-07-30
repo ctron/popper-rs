@@ -148,10 +148,10 @@ fn to_map(value: JsValue) -> HashMap<String, String> {
     for entry in entries.into_iter() {
         let key = js_sys::Reflect::get_u32(&entry, 0);
         let value = js_sys::Reflect::get_u32(&entry, 1);
-        if let (Ok(key), Ok(value)) = (key, value) {
-            if let (Some(key), Some(value)) = (key.as_string(), value.as_string()) {
-                result.insert(key, value);
-            }
+        if let (Ok(key), Ok(value)) = (key, value)
+            && let (Some(key), Some(value)) = (key.as_string(), value.as_string())
+        {
+            result.insert(key, value);
         }
     }
 

@@ -12,7 +12,7 @@ repository = "https://github.com/ctron/popper-rs"
 wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"
 gloo-events = "0.2"
-gloo-utils = "0.2"
+gloo-utils = { version = "0.3", features = ["serde"] }
 
 popper-rs = { path = "../.." }
 

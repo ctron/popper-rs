@@ -1,5 +1,6 @@
 use wasm_bindgen::prelude::*;
 
+#[allow(clippy::derivable_impls)]
 #[wasm_bindgen]
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum Orientation {
@@ -9,12 +10,14 @@ pub enum Orientation {
     Right = "right",
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for Orientation {
     fn default() -> Self {
         Self::Right
     }
 }
 
+#[allow(clippy::derivable_impls)]
 #[wasm_bindgen]
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 pub enum Placement {
@@ -39,6 +42,7 @@ pub enum Placement {
     BottomEnd = "bottom-end",
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for Placement {
     fn default() -> Self {
         Self::Auto
@@ -50,6 +54,7 @@ impl Default for Placement {
 /// This relates to the positioning of the HTML element, using the CSS `position` style.
 ///
 /// When using "portals", you most likely want [`Strategy::Fixed`].
+#[allow(clippy::derivable_impls)]
 #[wasm_bindgen]
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 pub enum Strategy {
@@ -57,6 +62,7 @@ pub enum Strategy {
     Fixed = "fixed",
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for Strategy {
     fn default() -> Self {
         Self::Absolute
