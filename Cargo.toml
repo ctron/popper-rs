@@ -2,6 +2,7 @@
 name = "popper-rs"
 version = "0.5.0"
 edition = "2024"
+rust-version.workspace = true
 
 license = "Apache-2.0"
 readme = "README.md"
@@ -35,6 +36,9 @@ all-features = true
 members = [
     "popper-rs-sys"
 ]
+
+[workspace.package]
+rust-version = "1.88"
 
 [workspace.metadata.release]
 tag-name = "v{{version}}"
